@@ -1,0 +1,33 @@
+MIS FINANZAS — publicación en GitHub Pages
+
+ARCHIVOS
+- index.html: aplicación completa.
+- manifest.webmanifest: configuración instalable (PWA).
+- sw.js: caché para funcionamiento sin conexión tras la primera visita.
+- icon-192.png e icon-512.png: iconos de la aplicación.
+- sonido-dinero.mp3: audio que suena al confirmar un nuevo ingreso de trabajo o alquiler.
+
+PUBLICAR
+1. En GitHub crea un repositorio NUEVO llamado: mis-finanzas
+2. Déjalo en Public (público).
+3. Entra en el repositorio y pulsa Add file > Upload files.
+4. Sube los siete archivos de esta carpeta (puedes subir también este LEEME).
+5. Pulsa Commit changes.
+6. Ve a Settings > Pages.
+7. En Build and deployment elige Deploy from a branch.
+8. Branch: main. Folder: /(root). Pulsa Save.
+9. Espera a que GitHub Pages publique la web. La dirección será:
+   https://aitor1111-1111.github.io/mis-finanzas/
+
+INSTALAR EN ANDROID
+1. Abre esa dirección con Google Chrome.
+2. Espera a que cargue y abre el menú ⋮.
+3. Pulsa Instalar aplicación o Añadir a pantalla de inicio.
+
+IMPORTANTE SOBRE LOS DATOS
+- Los datos se guardan en el almacenamiento local del navegador de ese dispositivo.
+- Usa Exportar copia en Ahorros para guardar periódicamente un archivo JSON.
+- Si borras los datos de Chrome o cambias de móvil, importa la copia de seguridad.
+- La cuota del día 19 se contabiliza al abrir la aplicación después del vencimiento; no se ejecuta en segundo plano.
+- El registro automático del ahorro se realiza al abrir la app el día 23 o después de esa fecha, una vez por mes. También existe el botón de fotografía manual.
+- Los importes iniciales están a cero: introduce tus datos reales.

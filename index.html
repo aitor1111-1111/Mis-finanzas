@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#142d43">
+<meta name="description" content="Control personal de ahorros, ingresos e hipoteca.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<title>MIS FINANZAS</title>
+<style>
+:root{--navy:#142d43;--navy2:#24465d;--green:#168567;--bg:#f3f6f8;--card:#fff;--ink:#172b3a;--muted:#687987;--line:#e3e9ed;--red:#b84242;--shadow:0 5px 20px #142d4310}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;padding-bottom:88px}
+header{background:var(--navy);color:#fff;padding:20px 18px 18px;border-radius:0 0 22px 22px}
+.brand{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:13px;background:var(--green);display:grid;place-items:center;font-size:23px}
+.brand h1{font-size:18px;letter-spacing:.7px;margin:0}.brand small{color:#bcd0dc;font-size:10px;letter-spacing:1px}
+.hero{margin-top:20px}.eyebrow{font-size:11px;color:#bfd0db;letter-spacing:.8px;font-weight:700}.hero-value{font-size:32px;font-weight:800;letter-spacing:-1px;text-align:right;margin:2px 0 8px;font-variant-numeric:tabular-nums}
+.hero-row{display:flex;justify-content:space-between;color:#d8e4eb;font-size:12px;margin-top:3px}
+.top-cards{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:14px}.top-card{background:var(--navy2);border-radius:13px;padding:10px}.top-card span{display:block;color:#c3d5df;font-size:10px}.top-card strong{display:block;text-align:right;font-size:17px;font-variant-numeric:tabular-nums;margin-top:3px}
+nav{position:fixed;z-index:5;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(4,1fr);padding:7px 5px calc(7px + env(safe-area-inset-bottom));box-shadow:0 -4px 16px #142d430c}
+nav button{border:0;background:none;color:#71808b;font-size:11px;padding:6px 2px;border-radius:10px}nav button .ico{display:block;font-size:19px;margin-bottom:2px}nav button.active{color:var(--green);font-weight:800;background:#eaf5f1}
+main{max-width:720px;margin:auto;padding:17px 14px 28px}.page-title{font-size:23px;margin:2px 2px 14px}.subhead{font-size:11px;color:var(--muted);font-weight:800;letter-spacing:.8px;margin:3px 2px 10px;text-transform:uppercase}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:15px;margin-bottom:12px;box-shadow:var(--shadow)}
+.card h2{font-size:15px;margin:0 0 12px}.field{margin:9px 0}.field label{display:block;font-size:12px;color:var(--muted);font-weight:650;margin-bottom:5px}
+input,select{width:100%;border:1px solid #d7e0e5;border-radius:10px;padding:11px 12px;background:#fff;color:var(--ink);font:inherit;font-variant-numeric:tabular-nums;outline:none}
+input:focus,select:focus{border-color:var(--green);box-shadow:0 0 0 3px #16856718}
+.row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:8px 0}.row .label{color:var(--muted);font-size:13px}.value{font-weight:750;text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.total{background:#edf6f2;border-radius:12px;padding:12px;margin-top:10px}.total .big{font-size:23px;color:var(--green);font-weight:850;text-align:right;font-variant-numeric:tabular-nums}
+.muted{color:var(--muted);font-size:12px}.positive{color:var(--green)}.negative{color:var(--red)}
+button.primary,button.secondary,button.small{border:0;border-radius:11px;padding:11px 14px;font:700 13px system-ui;cursor:pointer}
+button.primary{background:var(--green);color:white;width:100%}button.secondary{background:#eaf0f3;color:var(--navy)}button.small{padding:7px 9px;background:#eaf0f3;color:var(--navy);font-size:11px}
+.monthline{display:grid;grid-template-columns:1fr minmax(110px,43%);align-items:center;gap:10px;margin:8px 0}.monthline label{font-size:13px}.monthline input{text-align:right;padding:9px}
+.table-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:12px}th,td{padding:9px 5px;border-bottom:1px solid var(--line);text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}th:first-child,td:first-child{text-align:left}th{color:var(--muted);font-size:10px}
+.pill{display:inline-block;padding:4px 8px;border-radius:20px;background:#edf6f2;color:var(--green);font-size:11px;font-weight:750}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.grid2 .field{margin:4px 0}
+.segment{display:flex;gap:7px}.segment label{flex:1;border:1px solid var(--line);padding:10px;border-radius:10px;font-size:12px}.segment input{width:auto;margin-right:5px}
+.note{background:#f3f6f8;padding:10px;border-radius:10px;color:var(--muted);font-size:11px;margin-top:9px}
+.empty{padding:20px;text-align:center;color:var(--muted);font-size:13px}
+.footer{text-align:center;color:#82909a;font-size:10px;padding:12px}
+@media(min-width:600px){main{padding-top:22px}.card{padding:18px}.hero-value{font-size:36px}}
+</style>
+</head>
+<body>
+<header>
+ <div class="brand"><div class="logo">€</div><div><h1>MIS FINANZAS</h1><small>CONTROL FINANCIERO PERSONAL</small></div></div>
+ <div class="hero"><div class="eyebrow">PATRIMONIO DISPONIBLE</div><div class="hero-value" id="heroTotal">0,00 €</div>
+ <div class="hero-row"><span>Banco</span><strong id="heroBank">0,00 €</strong></div><div class="hero-row"><span>Efectivo</span><strong id="heroCash">0,00 €</strong></div></div>
+ <div class="top-cards"><div class="top-card"><span>HIPOTECA PENDIENTE</span><strong id="heroMortgage">—</strong></div><div class="top-card"><span>CUOTA MENSUAL</span><strong id="heroPayment">—</strong></div></div>
+</header>
+<main id="app"></main>
+<audio id="moneySound" preload="auto" src="./sonido-dinero.mp3"></audio>
+<nav>
+ <button data-tab="inicio" class="active"><span class="ico">⌂</span>Inicio</button>
+ <button data-tab="ahorros"><span class="ico">▣</span>Ahorros</button>
+ <button data-tab="hipoteca"><span class="ico">⌂</span>Hipoteca</button>
+ <button data-tab="simulador"><span class="ico">▤</span>Simulador</button>
+</nav>
+<script>
+const KEY='misFinanzas_v1';
+const months=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+const now=new Date();
+const monthKey=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
+const euro=n=>(Number(n)||0).toLocaleString('es-ES',{style:'currency',currency:'EUR'});
+const num=v=>Math.max(0,Number(v)||0);
+const defaultData=()=>({bank:0,home:0,remi:Array(12).fill(0),salary:0,rent:0,savingsHistory:[],mortgage:{capital:0,years:0,rate:0,payment:0,installment:0,startMonth:monthKey(now),lastProcessedMonth:'',lastSnapshotMonth:'',schedule:[]},tab:'inicio'});
+let data;try{data={...defaultData(),...JSON.parse(localStorage.getItem(KEY)||'{}')};data.mortgage={...defaultData().mortgage,...(data.mortgage||{})};data.remi=Array.from({length:12},(_,i)=>num(data.remi?.[i]));data.savingsHistory=data.savingsHistory||[]}catch(e){data=defaultData()}
+function save(){localStorage.setItem(KEY,JSON.stringify(data));renderHeader()}
+function cashTotal(){return num(data.home)+data.remi.reduce((a,b)=>a+num(b),0)}
+function total(){return num(data.bank)+cashTotal()}
+function interestRate(){return num(data.mortgage.rate)/1200}
+function calcPayment(cap,rate,n){if(!n)return 0;if(!rate)return cap/n;return cap*rate/(1-Math.pow(1+rate,-n))}
+function remainingMonths(){return Math.max(0,Math.round(num(data.mortgage.years)*12)-num(data.mortgage.installment))}
+function mortgageSchedule(){let m=data.mortgage,bal=num(m.capital),r=interestRate(),n=remainingMonths(),pay=num(m.payment)||calcPayment(bal,r,n),rows=[];for(let i=1;i<=n&&bal>0.005;i++){let interest=bal*r,principal=Math.min(bal,Math.max(0,pay-interest)),actual=principal+interest;bal=Math.max(0,bal-principal);rows.push({i:i+num(m.installment),payment:actual,principal,interest,balance:bal})}return rows}
+function processMonthlyMortgage(){let m=data.mortgage;if(!num(m.capital)||!num(m.years))return;let due=new Date();due.setDate(1);due.setHours(0,0,0,0);if(now.getDate()<19)due.setMonth(due.getMonth()-1);let dueKey=monthKey(due);let last=m.lastProcessedMonth||m.startMonth||monthKey(now);if(dueKey<=last)return;
+ let cursor=new Date(Number(last.slice(0,4)),Number(last.slice(5,7))-1,1);while(monthKey(cursor)<dueKey){cursor.setMonth(cursor.getMonth()+1);let r=interestRate(),bal=num(m.capital),n=remainingMonths();if(bal<=0||n<=0)break;let pay=num(m.payment)||calcPayment(bal,r,n);let interest=bal*r,principal=Math.min(bal,Math.max(0,pay-interest));m.capital=Math.max(0,bal-principal);m.installment=num(m.installment)+1;m.lastProcessedMonth=monthKey(cursor);if(m.capital<=0.005){m.capital=0;break}}
+ save();
+}
+function takeSnapshotIfDue(){let key=monthKey(now),m=data.mortgage;if(now.getDate()>=23&&m.lastSnapshotMonth!==key){let exists=data.savingsHistory.some(x=>x.month===key);if(!exists)data.savingsHistory.push({month:key,balance:total(),bank:num(data.bank),cash:cashTotal(),income:num(data.salary)+num(data.rent)});m.lastSnapshotMonth=key;save()}}
+processMonthlyMortgage();takeSnapshotIfDue();
+function renderHeader(){document.getElementById('heroTotal').textContent=euro(total());document.getElementById('heroBank').textContent=euro(data.bank);document.getElementById('heroCash').textContent=euro(cashTotal());document.getElementById('heroMortgage').textContent=num(data.mortgage.capital)?euro(data.mortgage.capital):'—';let n=remainingMonths(),p=num(data.mortgage.payment)||calcPayment(num(data.mortgage.capital),interestRate(),n);document.getElementById('heroPayment').textContent=p?euro(p):'—'}
+function field(id,label,value,step='0.01'){return `<div class="field"><label for="${id}">${label}</label><input id="${id}" type="number" min="0" step="${step}" value="${value??0}"></div>`}
+function row(label,value,cls=''){return `<div class="row"><span class="label">${label}</span><strong class="value ${cls}">${value}</strong></div>`}
+function card(title,body){return `<section class="card"><h2>${title}</h2>${body}</section>`}
+function renderInicio(){let income=num(data.salary)+num(data.rent);return `<h2 class="page-title">Resumen general</h2><div class="subhead">${months[now.getMonth()]} ${now.getFullYear()}</div>${card('Patrimonio disponible',row('Saldo bancario',euro(data.bank))+row('Efectivo total',euro(cashTotal()))+`<div class="total"><div class="eyebrow" style="color:#567466">PATRIMONIO TOTAL</div><div class="big">${euro(total())}</div></div>`)}${card('Mi hipoteca',row('Capital pendiente',num(data.mortgage.capital)?euro(data.mortgage.capital):'Sin configurar')+row('Cuota mensual',num(data.mortgage.payment)?euro(data.mortgage.payment):'—')+row('Cuotas restantes',remainingMonths()?remainingMonths():'—')+`<button class="secondary" onclick="setTab('hipoteca')">Ver hipoteca</button>`)}${card('Ingresos del mes',row('Ingresos del trabajo',euro(data.salary))+row('Alquiler del piso',euro(data.rent))+`<div class="total">${row('TOTAL INGRESOS',euro(income))}</div>`)}<div class="note">Los datos se guardan en este dispositivo. Recuerda hacer una copia de seguridad desde la sección Ahorros.</div>`}
+function renderAhorros(){let prev=data.savingsHistory.filter(x=>x.month!==monthKey(now)).sort((a,b)=>a.month.localeCompare(b.month)).at(-1);let delta=prev?total()-prev.balance:0;let diff=prev?row('Diferencia respecto al mes anterior',euro(delta),delta>=0?'positive':'negative'):'<div class="muted">Todavía no hay una fotografía del mes anterior.</div>';let remi=months.map((m,i)=>`<div class="monthline"><label>${m}</label><div style="display:flex;gap:5px"><input data-remi="${i}" type="number" min="0" step=".01" value="${data.remi[i]||''}" placeholder="0,00"><button class="small" title="Pasar todo a dinero en casa" onclick="transferRemi(${i})">Entregado</button></div></div>`).join('');
+let hist=[...data.savingsHistory].sort((a,b)=>a.month.localeCompare(b.month));let rows=hist.length?hist.map((x,i)=>{let prior=hist[i-1];let d=prior?x.balance-prior.balance:null;let date=new Date(Number(x.month.slice(0,4)),Number(x.month.slice(5,7))-1,1);return `<tr><td>${months[date.getMonth()]} ${date.getFullYear()}</td><td>${euro(x.balance)}</td><td class="${d===null?'':d>=0?'positive':'negative'}">${d===null?'—':(d>0?'+':'')+euro(d)}</td></tr>`}).join(''):'<tr><td colspan="3" class="empty">Aún no hay registros guardados.</td></tr>';
+return `<h2 class="page-title">Ahorros</h2><div class="subhead">Saldos del mes en curso · ${months[now.getMonth()]} ${now.getFullYear()}</div>${card('1. Saldos del mes en curso',field('bank','Saldo en cuenta bancaria (€)',data.bank)+row('Efectivo total',euro(cashTotal()))+`<div class="total"><div class="eyebrow" style="color:#567466">PATRIMONIO DISPONIBLE</div><div class="big">${euro(total())}</div></div>`)}${card('2. Comparación con el mes anterior',diff+row('Saldo actual',euro(total())))}${card('3. Ingresos del mes en curso',field('salary','Ingresos del trabajo (€)',data.salary)+field('rent','Ingresos del alquiler (€)',data.rent)+`<div class="total">${row('TOTAL INGRESOS',euro(num(data.salary)+num(data.rent)))}</div>`)}${card('4. Ahorro en efectivo',field('home','Dinero que tengo en casa (€)',data.home)+`<h3 style="font-size:13px;margin:16px 0 3px">Dinero que Remi tiene pendiente de entregarme</h3><div class="muted">Introduce la cantidad correspondiente a cada mes. Pulsa «Entregado» cuando te lo devuelva para moverlo a dinero en casa sin duplicarlo.</div>${remi}<div class="total">${row('TOTAL PENDIENTE DE REMI',euro(data.remi.reduce((a,b)=>a+num(b),0)))}${row('TOTAL EFECTIVO',euro(cashTotal()))}</div>`)}${card('5. Histórico y evolución de mis ahorros',`<div class="muted">Sin gráficos. Se guarda una fotografía al abrir la aplicación a partir del día 23 de cada mes.</div><div class="table-wrap"><table><thead><tr><th>Mes</th><th>Saldo total</th><th>Ahorro</th></tr></thead><tbody>${rows}</tbody></table></div><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px"><button class="secondary" onclick="snapshotNow()">Guardar fotografía ahora</button><button class="secondary" onclick="exportBackup()">Exportar copia</button><button class="secondary" onclick="document.getElementById('restoreFile').click()">Importar copia</button><input id="restoreFile" type="file" accept="application/json" hidden onchange="importBackup(event)"></div>`)}<div class="footer">Tus datos se almacenan localmente en este dispositivo.</div>`}
+function renderHipoteca(){let m=data.mortgage,n=remainingMonths(),r=interestRate(),payment=num(m.payment)||calcPayment(num(m.capital),r,n),rows=mortgageSchedule(),sumI=rows.reduce((s,x)=>s+x.interest,0),sumP=rows.reduce((s,x)=>s+x.payment,0);let table=rows.length?rows.map(x=>`<tr><td>${x.i}</td><td>${euro(x.principal)}</td><td>${euro(x.interest)}</td><td>${euro(x.payment)}</td><td>${euro(x.balance)}</td></tr>`).join(''):'<tr><td colspan="5" class="empty">Introduce los datos de tu hipoteca para calcular el cuadro.</td></tr>';
+return `<h2 class="page-title">Mi hipoteca</h2>${card('Configuración de la hipoteca',field('capital','Capital pendiente actual (€)',m.capital)+field('years','Años restantes',m.years,'1')+field('rate','Tipo de interés anual (%)',m.rate)+field('payment','Cuota mensual real (€) · opcional',m.payment)+`<div class="muted">Si dejas la cuota real en 0, se calcula mediante el sistema francés. Vencimiento mensual: día 19.</div><button class="primary" onclick="saveMortgage()">Guardar datos de hipoteca</button>`)}${card('Resumen de deuda',row('Capital pendiente',euro(m.capital))+row('Intereses restantes estimados',euro(sumI))+row('Total pendiente de pagar',euro(num(m.capital)+sumI))+row('Cuota mensual estimada',euro(payment))+row('Cuotas restantes',n)+row('Número de cuotas abonadas',num(m.installment)))}${card('Cuadro de amortización',`<div class="muted">Desglose de todas las cuotas restantes. La última cuota puede ser inferior por ajuste del saldo.</div><div class="table-wrap"><table><thead><tr><th>Cuota</th><th>Capital</th><th>Interés</th><th>Cuota</th><th>Capital pendiente</th></tr></thead><tbody>${table}</tbody></table></div>`)}<div class="note">La aplicación contabiliza una cuota por cada vencimiento del día 19 que haya pasado, una sola vez, al abrirla. No ejecuta procesos en segundo plano cuando está cerrada.</div>`}
+function renderSim(){let m=data.mortgage,cap=num(m.capital),r=interestRate(),n=remainingMonths(),oldPay=num(m.payment)||calcPayment(cap,r,n);let extra=num(window.simExtra),newCap=Math.max(0,cap-extra),mode=window.simMode||'plazo';let newPay=calcPayment(newCap,r,n);let newN=0;if(newCap>0&&oldPay>0){if(!r)newN=Math.ceil(newCap/oldPay);else if(oldPay<=newCap*r)newN=n;else newN=Math.ceil(-Math.log(1-r*newCap/oldPay)/Math.log(1+r))}
+let oldInt=Math.max(0,oldPay*n-cap),newInt=mode==='plazo'?Math.max(0,oldPay*newN-newCap):Math.max(0,newPay*n-newCap);let saved=Math.max(0,oldInt-newInt);
+return `<h2 class="page-title">Simulador</h2>${card('Amortización anticipada',`<div class="muted">Simulación orientativa con el tipo de interés actual constante y sin comisiones. No modifica tu hipoteca real.</div>${row('Capital pendiente',euro(cap))}${field('simExtra','Cantidad que quieres amortizar (€)',window.simExtra||0)}<div class="field"><label>¿Qué quieres reducir?</label><div class="segment"><label><input type="radio" name="simMode" value="plazo" ${mode==='plazo'?'checked':''}>Plazo</label><label><input type="radio" name="simMode" value="cuota" ${mode==='cuota'?'checked':''}>Cuota</label></div></div><div class="total">${row('Nuevo capital pendiente',euro(newCap))}${mode==='plazo'?row('Nueva cuota mensual',euro(oldPay))+row('Cuotas restantes tras amortizar',newN)+row('Cuotas que ahorras',Math.max(0,n-newN)):row('Nueva cuota mensual',euro(newPay))+row('Reducción mensual',euro(oldPay-newPay))}<div class="eyebrow" style="color:#567466;margin-top:12px">AHORRO ESTIMADO EN INTERESES</div><div class="big">${euro(saved)}</div></div>`)}<div class="note">Para obtener una simulación exacta, introduce el capital pendiente, plazo y tipo vigentes. No se incluyen comisiones ni posibles cambios futuros del tipo.</div>`}
+function render(){renderHeader();document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('active',b.dataset.tab===data.tab));let html=data.tab==='inicio'?renderInicio():data.tab==='ahorros'?renderAhorros():data.tab==='hipoteca'?renderHipoteca():renderSim();document.getElementById('app').innerHTML=html;bindInputs()}
+function playMoneySound(){
+ const audio=document.getElementById('moneySound');
+ if(!audio)return;
+ audio.pause();audio.currentTime=0;
+ const result=audio.play();
+ if(result&&typeof result.catch==='function')result.catch(()=>{});
+}
+function bindInputs(){['bank','home','salary','rent'].forEach(id=>{let el=document.getElementById(id);if(el)el.addEventListener('change',()=>{const previous=num(data[id]);const next=num(el.value);data[id]=next;save();if((id==='salary'||id==='rent')&&next>0&&next!==previous)playMoneySound();render()})});document.querySelectorAll('[data-remi]').forEach(el=>el.addEventListener('change',()=>{data.remi[Number(el.dataset.remi)]=num(el.value);save();render()}));let ex=document.getElementById('simExtra');if(ex)ex.addEventListener('input',()=>{window.simExtra=ex.value;renderSimOnly()});document.querySelectorAll('input[name="simMode"]').forEach(el=>el.addEventListener('change',()=>{window.simMode=el.value;renderSim()}))}
+function renderSimOnly(){let app=document.getElementById('app');let pos=app.querySelector('.total');if(pos){let temp=document.createElement('div');temp.innerHTML=renderSim();app.innerHTML=temp.innerHTML;bindInputs()}}
+function setTab(tab){data.tab=tab;save();render()}
+document.querySelectorAll('nav button').forEach(b=>b.addEventListener('click',()=>setTab(b.dataset.tab)));
+function transferRemi(i){let amount=num(data.remi[i]);if(!amount)return;data.home=num(data.home)+amount;data.remi[i]=0;save();render()}
+function snapshotNow(){let key=monthKey(now),i=data.savingsHistory.findIndex(x=>x.month===key),record={month:key,balance:total(),bank:num(data.bank),cash:cashTotal(),income:num(data.salary)+num(data.rent)};if(i>=0)data.savingsHistory[i]=record;else data.savingsHistory.push(record);data.mortgage.lastSnapshotMonth=key;save();render()}
+function exportBackup(){let blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='mis-finanzas-copia-'+monthKey(now)+'.json';a.click();URL.revokeObjectURL(a.href)}
+function importBackup(e){let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{try{let d=JSON.parse(r.result);if(!d||typeof d!=='object'||!d.mortgage||!Array.isArray(d.remi))throw Error();data={...defaultData(),...d};save();render();alert('Copia importada correctamente.')}catch(err){alert('No se ha podido importar: archivo no válido.')}};r.readAsText(f)}
+function saveMortgage(){let m=data.mortgage;['capital','years','rate','payment'].forEach(k=>{let el=document.getElementById(k);m[k]=num(el.value)});if(!m.lastProcessedMonth)m.lastProcessedMonth=monthKey(now);m.schedule=[];save();render();alert('Datos de hipoteca guardados.')}
+render();
+if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+</script>
+</body></html>
