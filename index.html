@@ -122,7 +122,7 @@ function validateFinanceBackup(d){
   });
  }
  const m=d.mortgage,base=out.mortgage;
- for(const key of ['capital','years','rate','payment','installment'])if(m[key]!==undefined)base[key]=backupNumber(m[key],'hipoteca '+key);
+ for(const key of ['capital','years','remainingInstallments','rate','payment','installment'])if(m[key]!==undefined)base[key]=backupNumber(m[key],'hipoteca '+key);
  for(const key of ['startMonth','lastProcessedMonth','lastSnapshotMonth'])if(m[key]!==undefined&&m[key]!==''&&!validMonthKey(m[key]))throw Error('Fecha de hipoteca no válida.');
  base.startMonth=validMonthKey(m.startMonth)?m.startMonth:base.startMonth;
  base.lastProcessedMonth=validMonthKey(m.lastProcessedMonth)?m.lastProcessedMonth:'';
