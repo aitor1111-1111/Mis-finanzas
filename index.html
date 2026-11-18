@@ -106,7 +106,7 @@ document.querySelectorAll('nav button').forEach(b=>b.addEventListener('click',()
 function transferRemi(i){let amount=num(data.remi[i]);if(!amount)return;data.home=num(data.home)+amount;data.remi[i]=0;save();render()}
 function snapshotNow(){let key=monthKey(now),i=data.savingsHistory.findIndex(x=>x.month===key),record={month:key,balance:total(),bank:num(data.bank),cash:cashTotal(),income:num(data.salary)+num(data.rent)};if(i>=0)data.savingsHistory[i]=record;else data.savingsHistory.push(record);data.mortgage.lastSnapshotMonth=key;save();render()}
 function exportBackup(){let blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='mis-finanzas-copia-'+monthKey(now)+'.json';a.click();URL.revokeObjectURL(a.href)}
-function validMonthKey(v){return typeof v==='string'&&/^\\d{4}-(0[1-9]|1[0-2])$/.test(v)}
+function validMonthKey(v){return typeof v==='string'&&/^\d{4}-(0[1-9]|1[0-2])$/.test(v)}
 function backupNumber(v,label){if(!Number.isFinite(Number(v))||Number(v)<0||Number(v)>1000000000)throw Error('Valor no válido: '+label);return Number(v)}
 function validateFinanceBackup(d){
  if(!d||typeof d!=='object'||Array.isArray(d)||!d.mortgage||typeof d.mortgage!=='object'||Array.isArray(d.mortgage))throw Error('Estructura de copia incorrecta.');
