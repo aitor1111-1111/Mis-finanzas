@@ -106,46 +106,7 @@ document.querySelectorAll('nav button').forEach(b=>b.addEventListener('click',()
 function transferRemi(i){let amount=num(data.remi[i]);if(!amount)return;data.home=num(data.home)+amount;data.remi[i]=0;save();render()}
 function snapshotNow(){let key=monthKey(now),i=data.savingsHistory.findIndex(x=>x.month===key),record={month:key,balance:total(),bank:num(data.bank),cash:cashTotal(),income:num(data.salary)+num(data.rent)};if(i>=0)data.savingsHistory[i]=record;else data.savingsHistory.push(record);data.mortgage.lastSnapshotMonth=key;save();render()}
 function exportBackup(){let blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='mis-finanzas-copia-'+monthKey(now)+'.json';a.click();URL.revokeObjectURL(a.href)}
-function validMonthKey(v){return typeof v==='string'&&/^\\d{4}-(0[1-9]|1[0-2])$/.test(v)}
-function backupNumber(v,label){if(!Number.isFinite(Number(v))||Number(v)<0||Number(v)>1000000000)throw Error('Valor no válido: '+label);return Number(v)}
-function validateFinanceBackup(d){
- if(!d||typeof d!=='object'||Array.isArray(d)||!d.mortgage||typeof d.mortgage!=='object'||Array.isArray(d.mortgage))throw Error('Estructura de copia incorrecta.');
- const out=defaultData();
- for(const key of ['bank','home','salary','rent'])if(d[key]!==undefined)out[key]=backupNumber(d[key],key);
- if(!Array.isArray(d.remi)||d.remi.length!==12)throw Error('La copia debe contener los 12 importes mensuales.');
- out.remi=d.remi.map((v,i)=>backupNumber(v,'efectivo mensual'));
- if(d.savingsHistory!==undefined){
-  if(!Array.isArray(d.savingsHistory)||d.savingsHistory.length>600)throw Error('Histórico de ahorros no válido.');
-  out.savingsHistory=d.savingsHistory.map(x=>{
-   if(!x||typeof x!=='object'||!validMonthKey(x.month))throw Error('Hay un mes del histórico no válido.');
-   return {month:x.month,balance:backupNumber(x.balance,'saldo histórico'),bank:backupNumber(x.bank??0,'saldo bancario histórico'),cash:backupNumber(x.cash??0,'efectivo histórico'),income:backupNumber(x.income??0,'ingresos históricos')};
-  });
- }
- const m=d.mortgage,base=out.mortgage;
- for(const key of ['capital','years','rate','payment','installment'])if(m[key]!==undefined)base[key]=backupNumber(m[key],'hipoteca '+key);
- for(const key of ['startMonth','lastProcessedMonth','lastSnapshotMonth'])if(m[key]!==undefined&&m[key]!==''&&!validMonthKey(m[key]))throw Error('Fecha de hipoteca no válida.');
- base.startMonth=validMonthKey(m.startMonth)?m.startMonth:base.startMonth;
- base.lastProcessedMonth=validMonthKey(m.lastProcessedMonth)?m.lastProcessedMonth:'';
- base.lastSnapshotMonth=validMonthKey(m.lastSnapshotMonth)?m.lastSnapshotMonth:'';
- base.schedule=[];
- out.tab=['inicio','ahorros','hipoteca','simulacion'].includes(d.tab)?d.tab:'inicio';
- return out;
-}
-function importBackup(e){
- const file=e.target.files&&e.target.files[0];if(!file)return;
- if(file.size>2*1024*1024){alert('La copia supera el límite de 2 MB.');e.target.value='';return;}
- const reader=new FileReader();
- reader.onload=()=>{
-  try{
-   const parsed=JSON.parse(reader.result),validated=validateFinanceBackup(parsed);
-   if(!confirm('La copia sustituirá los datos actuales de Mis Finanzas. ¿Quieres continuar?'))return;
-   data=validated;save();render();alert('Copia importada correctamente.');
-  }catch(err){console.warn('Copia rechazada:',err);alert(err.message||'No se ha podido importar: archivo no válido.');}
-  finally{e.target.value='';}
- };
- reader.onerror=()=>{alert('No se ha podido leer el archivo.');e.target.value='';};
- reader.readAsText(file);
-}
+function importBackup(e){let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{try{let d=JSON.parse(r.result);if(!d||typeof d!=='object'||!d.mortgage||!Array.isArray(d.remi))throw Error();data={...defaultData(),...d};save();render();alert('Copia importada correctamente.')}catch(err){alert('No se ha podido importar: archivo no válido.')}};r.readAsText(f)}
 function saveMortgage(){let m=data.mortgage;['capital','years','remainingInstallments','rate','payment'].forEach(k=>{let el=document.getElementById(k);if(el)m[k]=num(el.value)});if(!m.lastProcessedMonth)m.lastProcessedMonth=monthKey(now);m.schedule=[];save();render();alert('Datos de hipoteca guardados.')}
 render();
 if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
