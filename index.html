@@ -71,5 +71,5 @@ document.querySelectorAll('nav button').forEach(b=>b.addEventListener('click',()
 function exportBackup(){const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='mis-finanzas-copia-'+monthKey(new Date())+'.json';a.click();URL.revokeObjectURL(a.href)}
 function importBackup(e){const f=e.target.files[0];if(!f)return;const reader=new FileReader();reader.onload=()=>{try{const d=JSON.parse(reader.result);if(!d||typeof d!=='object'||!Array.isArray(d.remi)||!d.mortgage)throw Error();data={...blank(),...d,mortgage:{...blank().mortgage,...d.mortgage}};save();render();alert('Copia restaurada correctamente.')}catch(err){alert('Archivo de copia no válido.')}};reader.readAsText(f)}
 processMortgage();render();
-if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+if('serviceWorker'in navigator)window.addEventListener('load',async()=>{try{const reg=await navigator.serviceWorker.register('./sw.js');await reg.update();}catch(e){console.warn('No se pudo comprobar la actualización de la aplicación',e);}});
 </script></body></html>
