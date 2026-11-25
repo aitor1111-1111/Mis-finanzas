@@ -74,6 +74,9 @@ function renderInicio(){
  const nextFinal=iso(new Date(Number(initial.date.slice(0,4)),Number(initial.date.slice(5,7)),23));
  const final=getSnapshot(nextFinal)||{date:nextFinal,bank:data.bank,home:data.home,remi:pendingRemi()};
  const rows=periodRows().sort((a,b)=>b.start.date.localeCompare(a.start.date));
+ const accumulatedSavings=rows.reduce((sum,x)=>sum+(x.end?(Number(x.total)||0):0),0);
+ const accumulatedLabel=accumulatedSavings>0?'AHORRO ACUMULADO':accumulatedSavings<0?'DESAHORRO ACUMULADO':'SIN AHORRO NI DESAHORRO';
+ const accumulatedClass=accumulatedSavings>0?'positive':accumulatedSavings<0?'negative':'';
 
  const money=n=>euro(n);
  const variation=(n)=>{if(n===null||n===undefined)return '—';return (n>0?'+':'')+money(n)};
@@ -102,7 +105,7 @@ function renderInicio(){
  return '<h2 class="page-title">Inicio</h2><p class="intro">Consulta tu saldo y registra las fotografías de ahorro de cada periodo.</p>'+
  
  card('Saldo final · Día 23 · Antes de cobrar','<p class="muted">Introduce el saldo final del periodo. Al guardarlo, se incorporará al histórico y se calculará la variación.</p>'+field('finalDate','Fecha',final.date,'date')+field('finalBank','Saldo real del banco (€)',final.bank)+field('finalHome','Efectivo real en casa (€)',final.home)+field('finalRemi','Dinero que tiene Remi (€)',final.remi)+'<div class="total">'+row('TOTAL FINAL',euro(num(final.bank)+num(final.home)+num(final.remi)))+'</div><button class="primary" onclick="saveSnapshotForm(\'final\')">Guardar y ver ahorro</button>')+
- card('Histórico completo de ahorro','<p class="muted">Abre cada periodo para consultar sus cifras. Puedes editar o eliminar cada periodo guardado.</p>'+historicalHtml);
+ card('Histórico completo de ahorro','<p class="muted">Abre cada periodo para consultar sus cifras. Puedes editar o eliminar cada periodo guardado.</p>'+historicalHtml+'<div class="history-total"><div class="history-total-title">TOTAL DE AHORRO HISTÓRICO ACUMULADO</div><div class="history-total-meta"><span>Suma de todos los periodos cerrados</span><span>Los periodos sin cierre computan 0,00 €</span></div><strong class="'+accumulatedClass+'">'+euro(accumulatedSavings)+'</strong><span class="history-status '+(accumulatedSavings>0?'good':accumulatedSavings<0?'bad':'')+'">'+accumulatedLabel+'</span></div>');
 }
 function periodEditor(x){
  const end=x.end;
