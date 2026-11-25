@@ -117,7 +117,7 @@ function saveEditedPeriod(oldStartDate,hasEnd){
  if(!sd||new Date(sd+'T12:00:00').getDate()!==24){alert('La fecha inicial debe ser un día 24.');return}
  const oldEndDate=hasEnd?iso(new Date(Number(oldStartDate.slice(0,4)),Number(oldStartDate.slice(5,7)),23)):null;
  let ed=null,eb='',eh='',er='';
- if(hasEnd){ed=document.getElementById('editEndDate').value;eb=document.getElementById('editEndBank').value;eh=document.getElementById('editEndHome').value;er=document.getElementById('editEndRemi').value;if(!ed||new Date(ed+'T12:00:00').getDate()!==23){alert('La fecha final debe ser un día 23.');return}}
+ if(hasEnd){ed=document.getElementById('editEndDate').value;eb=document.getElementById('editEndBank').value;eh=document.getElementById('editEndHome').value;er=document.getElementById('editEndRemi').value;const expectedEnd=iso(new Date(Number(sd.slice(0,4)),Number(sd.slice(5,7)),23));if(ed!==expectedEnd){alert('La fecha final debe ser el día 23 del mes siguiente a la fecha inicial.');return}}
  const excluded=[oldStartDate,oldEndDate].filter(Boolean),occupied=data.snapshots.filter(s=>!excluded.includes(s.date));
  if(occupied.some(s=>s.date===sd||(hasEnd&&s.date===ed))){alert('Ya existe una fotografía guardada con una de esas fechas.');return}
  data.snapshots=data.snapshots.filter(s=>!excluded.includes(s.date));
