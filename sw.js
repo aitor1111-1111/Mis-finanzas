@@ -1,4 +1,4 @@
-const CACHE='mis-finanzas-v12';
+const CACHE='mis-finanzas-v13';
 const FILES=['./','./index.html','./manifest.webmanifest','./icon-192.png','./icon-512.png','./sonido-dinero.mp3'];
 self.addEventListener('install',event=>{
   event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(FILES)).then(()=>self.skipWaiting()));
